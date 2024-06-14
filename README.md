@@ -62,6 +62,24 @@ options:
                         Include special characters in generated password
 ```
 
+# Docker Installtion
+
+```
+# Docker image build command
+$ docker build -t password_manager.py
+
+# Docker Store password
+$ Docker run -t  password_manager.py --operation store --master_password "mysecratepassword" --service "gmail" --password "mygmailpassword"
+
+# Docker Retrieve password
+$ Docker run -t password_manager.py --operation retrieve --master_password "mysecratepassword" --service "gmail" --password "mygmailpassword"
+
+# Docker Generate password
+$ Docker run -t password_manager.py --operation generate --master_password "mysecratepassword"
+
+
+```
+
 # Security Notice
 
 - Keep your master password secure. If someone gains access to your master password, they can decrypt all stored passwords.
