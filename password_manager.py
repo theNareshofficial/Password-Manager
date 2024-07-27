@@ -26,7 +26,7 @@ banner = f"""{GREEN}{BLINK}
             Github  : https://github.com/theNareshofficial
             Youtube : https://www.youtube.com/@nareshtechweb930
 
-{RESET}{RED}
+{RESET}
 """
 
 print(banner)
@@ -102,9 +102,14 @@ def retrieve_password(filename, master_password, service):
 
 # Function to generate a strong password
 def generate_password(length=12, include_special=True):
-    characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    alpha_char = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    small_char = "abcdefghijklmnopqrstuvwxyz"
+    spl_char = "!@#$%^&*()_+-=[]{}|;:',.<>?/`~"
+    num = "0123456789"
+    characters = alpha_char + small_char + num
+    characters = characters
     if include_special:
-        characters += "!@#$%^&*()_+-=[]{}|;:',.<>?/`~"
+        characters = spl_char
 
     password = ''.join(secrets.choice(characters) for _ in range(length))
     return password
