@@ -30,7 +30,7 @@ $ pip install -r requirements.txt
 $ python password_manager.py --operation store --master_password "mysecratepassword" --service "gmail" --password "mygmailpassword"
 
 # Retrieve password
-$ python password_manager.py --operation retrieve --master_password "mysecratepassword" --service "gmail" --password "mygmailpassword"
+$ python password_manager.py --operation retrieve --master_password "mysecratepassword" --service "gmail"
 
 # Generate password
 $ python password_manager.py --operation generate --master_password "mysecratepassword"
