@@ -11,20 +11,22 @@ from cryptography.hazmat.primitives.hashes import SHA256
 from cryptography.hazmat.backends import default_backend
 
 # Ansi color code
-RED = '\033[31m'        # RED color
-GREEN = '\033[32m'      # GREEN color
-RESET = '\033[0m'       # RESET all color
-BLINK = '\033[5m'       # Blink content
+BRIGHT_RED = '\033[91m'         # RED color
+BRIGHT_GREEN = '\033[92m'       # GREEN color
+BRIGHT_MAGENTA = '\033[95m'     # Magenta color
+BRIGHT_CYAN = '\033[96m'        # Cyan color
+RESET = '\033[0m'               # RESET all color
+BLINK = '\033[5m'               # Blink content
 
-banner = f"""{GREEN}{BLINK}
+banner = f"""{BRIGHT_GREEN}{BLINK}
 
 +---------------------------------+
 |  Command-Line Password Manager  |
 +---------------------------------+
- {RESET}
-            Author  : Naresh
-            Github  : https://github.com/theNareshofficial
-            Youtube : https://www.youtube.com/@nareshtechweb930
+ {RESET}{BRIGHT_MAGENTA}
+            |   Author  : Naresh
+            |   Github  : https://github.com/theNareshofficial
+            |   Youtube : https://www.youtube.com/@nareshtechweb930
 
 {RESET}
 """
@@ -80,25 +82,28 @@ def store_password(filename, master_password, service, password):
 
 # Function to retrieve a password
 def retrieve_password(filename, master_password, service):
-    if not os.path.exists(filename):
-        print("No password file found.")
-        return
+    try:
+        if not os.path.exists(filename):
+            print(f"{BRIGHT_MAGENTA} [!] {BRIGHT_RED} Password file Not Found !!!")
+            return
 
-    # Read the existing data
-    with open(filename, 'r') as f:
-        data = json.load(f)
+        # Read the existing data
+        with open(filename, 'r') as f:
+            data = json.load(f)
 
-    if "salt" not in data or service not in data:
-        print(f"No password stored for {service}")
-        return
+        if "salt" not in data or service not in data:
+            print(f"{BRIGHT_MAGENTA} [+] {BRIGHT_RED}Password Not stored for {service}!")
+            return
 
-    # Decrypt the password
-    salt = base64.urlsafe_b64decode(data["salt"])
-    key = generate_key(master_password, salt)
-    encrypted_password = data[service]
-    decrypted_password = decrypt(encrypted_password, key)
+        # Decrypt the password
+        salt = base64.urlsafe_b64decode(data["salt"])
+        key = generate_key(master_password, salt)
+        encrypted_password = data[service]
+        decrypted_password = decrypt(encrypted_password, key)
 
-    print(f"The password for {service} is: {decrypted_password}")
+        print(f"{BRIGHT_MAGENTA} [+] {BRIGHT_CYAN} The password for {service} is: {decrypted_password}")
+    except Exception:
+        print(f"{BRIGHT_MAGENTA}[!] {BRIGHT_RED}Master Password Invalid !!!")
 
 # Function to generate a strong password
 def generate_password(length=12, include_special=True):
@@ -137,20 +142,20 @@ def main():
 
     if args.operation == 'store':
         if not args.service or not args.password:
-            print("Service and password are required for storing.")
+            print(f"{BRIGHT_MAGENTA} [+] {BRIGHT_RED}Service and password are required for storing.")
             return
         store_password(args.filename, args.master_password, args.service, args.password)
-        print(f"Password for {args.service} stored successfully.")
+        print(f"{BRIGHT_MAGENTA} [+] {BRIGHT_CYAN}Password for {args.service} stored successfully in {BRIGHT_GREEN}passwords.json...")
 
     elif args.operation == 'retrieve':
         if not args.service:
-            print("Service is required for retrieving.")
+            print(f"{BRIGHT_MAGENTA} [+] {BRIGHT_RED}Service is required for retrieving.")
             return
         retrieve_password(args.filename, args.master_password, args.service)
 
     elif args.operation == 'generate':
         password = generate_password(length=args.length, include_special=args.include_special)
-        print(f"Generated password: {password}")
+        print(f"{BRIGHT_MAGENTA} [+] {BRIGHT_CYAN}Generated password: {password}")
 
 if __name__ == '__main__':
     main()
